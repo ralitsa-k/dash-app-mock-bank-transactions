@@ -2,10 +2,7 @@
 from dash import Dash, dcc, html, Input, Output
 import plotly.graph_objects as go
 import pandas as pd
-from pathlib import Path
-from base64 import b64encode
 import numpy as np
-import os
 import plotly.express as px
 import dash_bootstrap_components as dbc
 
@@ -41,10 +38,7 @@ SIDEBAR_STYLE = {
 
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
-
-curr_path = os.path.abspath(__file__)
-curr_abs_path = curr_path.split('PlottingScripts')[0]
-
+server = app.server
 
 
 # DIVISIONS
