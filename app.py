@@ -38,7 +38,7 @@ SIDEBAR_STYLE = {
 
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
-server = app.server
+#server = app.server
 
 
 # DIVISIONS
@@ -285,6 +285,6 @@ def return_text(fraud_option):
     
 
 
-app.run_server(debug=False)
+app.run_server(debug=False, port = 8050)
 
 
