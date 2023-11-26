@@ -36,9 +36,7 @@ SIDEBAR_STYLE = {
     
 }
 
-
 app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
-server = app.server
 
 
 # DIVISIONS
@@ -49,7 +47,6 @@ header  = html.Div([ html.Div(
                      className="app-header--title")])
         ]
     )
-
 
 radio_style = {"padding-left": "10px",
                'display':'inline-block',
@@ -171,12 +168,12 @@ def display_graph2(fraud_option):
 
 
     if fraud_option != 'fraud':
-        plot_fraud = full_df.loc[(full_df.fraud_type == 'none') &
+        plot_fraud = full_df.loc[(full_df.is_scam_transaction == 0) &
                                 (full_df.type != 'income') &
                                 (full_df.Category != 'Housing') &
                                 (full_df.Category != 'Investment'), :].groupby(['Category'])['Amount'].mean().reset_index()
     elif fraud_option == 'fraud':
-        plot_fraud = full_df.loc[(full_df.fraud_type != 'none') &
+        plot_fraud = full_df.loc[(full_df.is_scam_transaction == 1) &
                                 (full_df.Category != 'Investment'), :].groupby(['Category'])['Amount'].mean().reset_index()
 
     plot_fraud = plot_fraud.sort_values('Amount',ascending=False)
