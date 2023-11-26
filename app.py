@@ -37,7 +37,7 @@ SIDEBAR_STYLE = {
 }
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
-
+server = app.server
 
 # DIVISIONS
 header  = html.Div([ html.Div(
