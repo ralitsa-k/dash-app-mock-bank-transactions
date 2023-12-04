@@ -1,3 +1,12 @@
+# Aim: Try to fix the sankey hover highlighting
+    # Outcome: Tried, however none of my attempts were successful.
+
+# Code Changes
+    # Deleted (was redundant code): text = html.Div(html.H3(id = 'output_KPI'),className='column2', style = {'top':'5rem'})
+    # Modified dbc.Col(html.Div([html.Div(id='output')])) to dbc.Col(html.Div(id='output'))
+    # Add title=title to fig.update_layout in display_graph(fraud_option) function
+    # Improved the Hovertemplate for display_graph2(fraud_option) as well as the text display on the graph
+
 
 from dash import Dash, dcc, html, Input, Output
 import plotly.graph_objects as go
@@ -135,7 +144,8 @@ def display_graph(fraud_option):
         )
     ))
 
-    fig.update_layout(margin=dict(l=10, r=10, t=20, b=20),
+    fig.update_layout(margin=dict(l=10, r=10, t=40, b=20),
+                      title=title,
                   font=dict(size = 16, color = 'white'), width = 600, height = 500,
                   plot_bgcolor='#222222',
                       paper_bgcolor = '#222222',
@@ -179,7 +189,7 @@ def display_graph2(fraud_option):
     plot_fraud = plot_fraud.sort_values('Amount',ascending=False)
     plot_fraud['Amount'] = round(plot_fraud['Amount'],0)
    
-    fig = px.bar(plot_fraud,y = 'Category',x = 'Amount', text="Amount",
+    fig = px.bar(plot_fraud,y = 'Category',x = 'Amount', text=plot_fraud["Amount"].apply(lambda x: '£{:,.0f}'.format(x)),
                  labels=dict(Amount="Average Amount (£)"),color = 'Category',
                  color_discrete_sequence=colors)
     fig.update_layout(showlegend = False)
@@ -190,9 +200,18 @@ def display_graph2(fraud_option):
                                                          size=14, color='white'), 
                       width = 700, height = 600,
                       xaxis=dict(showgrid=False),
-                      yaxis=dict(showgrid=False))
+                      yaxis=dict(showgrid=False),
+                      hoverlabel=dict(font=dict(family="sans-serif", size=14)))
     fig.update_traces(textfont_size=15,  textangle=0, textposition="outside", cliponaxis=False)
 
+    # Update traces to customize hover template
+    fig.update_traces(
+        hovertemplate="<br>".join([
+            "Category Type: <b>%{y}</b>",
+            "Average Amount: <span style='text-decoration: underline;'><b>£%{x:,.0f}</b></span>",
+        ]),
+    )
+    
     return dbc.Col(dcc.Graph(figure=fig))
 
 
